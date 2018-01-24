@@ -1,7 +1,7 @@
 package com.tg.mq.spring;
 
-import com.gale.rocketmq.manager.ProducerManager;
-import com.gale.rocketmq.manager.PushConsumerManager;
+import com.cepheis.rocketmq.manager.ProducerManager;
+import com.cepheis.rocketmq.manager.PushConsumerManager;
 import com.tgou.monitor.zpkin.rocketmq.Zipk2RtMqConsumerInterceptor;
 import org.junit.After;
 import org.junit.Before;

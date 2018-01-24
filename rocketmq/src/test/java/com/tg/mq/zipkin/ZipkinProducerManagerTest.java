@@ -1,7 +1,7 @@
 package com.tg.mq.zipkin;
 
-import com.gale.rocketmq.message.SimpleData;
-import com.gale.rocketmq.message.ZipkinSimpleMessage;
+import com.cepheis.rocketmq.message.SimpleData;
+import com.cepheis.rocketmq.message.ZipkinSimpleMessage;
 import com.tg.mq.spring.SpringTestEnv;
 import com.tgou.monitor.zpkin.common.tracing.TracingFactory;
 import com.tgou.monitor.zpkin.rocketmq.Zipk2RtMqProducerInterceptor;

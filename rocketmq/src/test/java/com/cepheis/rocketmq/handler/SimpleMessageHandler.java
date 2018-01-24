@@ -1,6 +1,5 @@
-package com.tg.mq.zipkin;
+package com.cepheis.rocketmq.handler;
 
-import com.cepheis.rocketmq.handler.MessageHandlerConcurrently;
 import com.cepheis.rocketmq.message.SimpleData;
 import com.cepheis.rocketmq.message.protocol.MessageDecoder;
 import com.cepheis.rocketmq.message.protocol.impl.JsonMessageDecoder;
@@ -14,8 +13,8 @@ import java.util.concurrent.TimeUnit;
 /**
  * Created by diwayou on 2015/10/29.
  */
-@Component("zipkinSimpleMessageHandler")
-public class ZipkinSimpleMessageHandler implements MessageHandlerConcurrently<SimpleData> {
+@Component("simpleMessageHandler")
+public class SimpleMessageHandler implements MessageHandlerConcurrently<SimpleData> {
 
     private static final MessageDecoder<SimpleData> messageDecoder = new JsonMessageDecoder<SimpleData>(SimpleData.class);
 
@@ -24,12 +23,12 @@ public class ZipkinSimpleMessageHandler implements MessageHandlerConcurrently<Si
         System.out.println("Received simple message from " + message.getTags() + " " + data);
 
         try {
-            TimeUnit.SECONDS.sleep(2);
+            TimeUnit.MINUTES.sleep(1);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
 
-        return ConsumeConcurrentlyStatus.CONSUME_SUCCESS;
+        return ConsumeConcurrentlyStatus.RECONSUME_LATER;
     }
 
     @Override
