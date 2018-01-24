@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <bean id="pushConsumerManager" class="com.gale.rocketmq.manager.PushConsumerManager" init-method="init"
+          destroy-method="destroy">
+        <property name="consumerConfig" ref="consumerConfig"/>
+    </bean>
+
+    <bean id="consumerConfig" class="com.gale.rocketmq.config.ConsumerConfig">
+        <property name="consumerGroup" value="DIWAYOU_TEST_CONSUMER_GROUP"/>
+        <property name="namesrvAddr" value="10.10.4.11:9876"/>
+        <property name="dataId" value="ROCKETMQ_COMMON"/>
+        <property name="messageListener" ref="defaultMessageListenerConcurrently"/>
+    </bean>
+
+    <bean id="zipk2RtMqConsumerInterceptor" class="com.tgou.monitor.zpkin.rocketmq.Zipk2RtMqConsumerInterceptor">
+        <constructor-arg name="tracing" value="#{T(com.tg.mq.zipkin.TracingFactoryTest).getTracing()}"/>
+    </bean>
+    <bean id="defaultMessageListenerConcurrently" class="com.gale.rocketmq.listener.DefaultMessageListenerConcurrently">
+        <property name="topicTagHandlerRoute">
+            <map>
+                <entry key="DiwayouTest">
+                    <map>
+                        <entry key="test_tag" value-ref="simpleMessageHandler"/>
+                        <entry key="trans_tag" value-ref="transMessageHandler"/>
+                        <entry key="test_tag_zipkin2" value-ref="zipkinSimpleMessageHandler"/>
+                    </map>
+                </entry>
+            </map>
+        </property>
+        <property name="zipk2RtMqConsumerInterceptor" ref="zipk2RtMqConsumerInterceptor"></property>
+    </bean>
+</beans>

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <bean id="producerManager" class="com.gale.rocketmq.manager.ProducerManager" init-method="init" destroy-method="destroy">
+        <property name="producerConfig" ref="producerConfig" />
+    </bean>
+
+    <bean id="producerConfig" class="com.gale.rocketmq.config.ProducerConfig">
+        <property name="producerGroup" value="DIWAYOU_TEST_PRODUCER_GROUP" />
+        <property name="namesrvAddr" value="10.10.4.11:9876" />
+        <property name="useTransaction" value="true" />
+        <property name="transactionCheckListener" ref="defaultTransactionCheckListener" />
+    </bean>
+
+    <bean id="defaultTransactionCheckListener" class="com.gale.rocketmq.listener.DefaultTransactionCheckListener">
+        <property name="topicTagHandlerRoute">
+            <map>
+                <entry key="DiwayouTest">
+                    <map>
+                        <entry key="trans_tag" value-ref="transMessageCheckHandler" />
+                    </map>
+                </entry>
+            </map>
+        </property>
+    </bean>
+</beans>
