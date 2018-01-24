@@ -24,15 +24,14 @@ import static com.tgou.monitor.zpkin.util.InterceptIfNotNull.*;
  * Created by diwayou on 2015/10/29.
  */
 public class DefaultMessageListenerConcurrently extends AbstractMessageListener implements MessageListenerConcurrently {
-    public Zipk2RtMqConsumerInterceptor zipk2RtMqConsumerInterceptor;
 
     public DefaultMessageListenerConcurrently() {
+        
     }
 
     @Override
     public ConsumeConcurrentlyStatus consumeMessage(List<MessageExt> msgs, ConsumeConcurrentlyContext context) {
         for (MessageExt message : msgs) {
-            preProcess(zipk2RtMqConsumerInterceptor, message, null);//1
             ConsumeResult result = consumeMessage(message, context, msgs);
             if (result.t == null) {
                 completeProcess(zipk2RtMqConsumerInterceptor, message, result.consumeStatus, null);//2
@@ -50,10 +49,8 @@ public class DefaultMessageListenerConcurrently extends AbstractMessageListener 
         if (res.consumeStatus != null || res.messageHandler == null) {
             return res;
         }
-
         MessageHandlerConcurrently messageHandler = res.messageHandler;
         MessageDecoder decoder = messageHandler.getMessageDecoder();
-
         try {
             ConsumeConcurrentlyStatus status = messageHandler.process(decoder.decode(message.getBody()), message, context);
             res.consumeStatus = status;

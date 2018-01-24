@@ -9,7 +9,7 @@ import org.apache.rocketmq.common.message.MessageExt;
  */
 public interface TransactionCheckHandler<T> {
 
-    LocalTransactionState process(T data, MessageExt message);
-
     MessageDecoder<T> getMessageDecoder();
+
+    LocalTransactionState process(T data, MessageExt message);
 }

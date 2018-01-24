@@ -26,15 +26,11 @@ public abstract class AbstractMessageListener implements MessageListener {
 
     public Pair<Integer, MessageHandler> getMessageHandler(MessageExt message) {
         String topic = message.getTopic();
-
         Map<String, MessageHandler> tagToHandler = topicTagHandlerRoute.get(topic);
         if (MapUtils.isEmpty(tagToHandler)) {
-            String errMsg = "Can't find tagToHandler for topic=" + topic;
-            logger.error(errMsg);
-
-            return new Pair<Integer, MessageHandler>(MessageHandler.DELIVERY_ERROR, null);
+            logger.error("Can't find tagToHandler for topic=" + topic);
+            return new Pair<>(MessageHandler.DELIVERY_ERROR, null);
         }
-
         MessageHandlerConcurrently messageHandler;
         String tag = message.getTags();
         if (StringUtils.isEmpty(tag)) {
